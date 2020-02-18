@@ -14,9 +14,31 @@ Trie::Trie() {
 	}
 }
 
-// copy constructor
-Trie::Trie(const Trie&) {
+// helper function to recursively copy all children
+TrieNode * copyTrie(const TrieNode * copyNode) {
+	if (0 == copyNode) {
+		return 0;
+	}
+	TrieNode * newNode;
+	// prefix traversal--process node before its children
+	try {
+		newNode = new TrieNode();
+	}
+	catch (std::bad_alloc) {
+		return 0;
+	}
 
+	// for each child of the node to copy, call copyTrie
+	for (int i = 0; i < ALPHABET; ++i) {
+		newNode->children[i] = copyTrie(copyNode->children[i]);
+	}
+
+	return newNode;
+}
+
+// copy constructor
+Trie::Trie(const Trie& otherTrie) {
+	root = copyTrie(otherTrie.root);
 }
 
 // helper function to recursively delete all children
@@ -28,7 +50,7 @@ void deleteAllChildren(TrieNode *node) {
 			return;
 		}
 		// for each child of the node, call deleteAllChildren
-		for (TrieNode* child : node->children) { //??
+		for (TrieNode* child : node->children) { 
 			deleteAllChildren(child);
 		}
 	}
@@ -36,9 +58,8 @@ void deleteAllChildren(TrieNode *node) {
 
 // destructor
 Trie::~Trie() {
-	TrieNode *current = root;
 	deleteAllChildren(root);
-
+	root = 0;
 }
 
 // insert method
