@@ -86,9 +86,9 @@ void Trie::insert(std::string word) {
 }
 
 // search function
-bool Trie::search(std::string word) {
+TrieNode* Trie::search(std::string word) {
 	if (isEmpty()) {
-		return false;
+		return 0;
 	}
 	TrieNode *current = root;
 	
@@ -98,10 +98,10 @@ bool Trie::search(std::string word) {
 			current = current->children[word[i] - 'a'];
 		}
 		else {
-			return false;
+			return 0;
 		}
 	}
-	return true;
+	return current;
 }
 
 // remove function

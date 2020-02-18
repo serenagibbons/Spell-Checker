@@ -30,7 +30,7 @@ int main() {
 
 	// declare variables
 	std::string word;
-	bool correct;
+	TrieNode *found;
 	int exit = 0;
 
 	do {
@@ -50,8 +50,8 @@ int main() {
 		}
 		else {
 			// search for word in the trie
-			correct = trie.search(word);
-			if (correct) {
+			found = trie.search(word);
+			if (found != 0) {
 				std::cout << word << " is spelled correctly.\n";
 			}
 			else {

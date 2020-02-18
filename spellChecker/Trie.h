@@ -19,7 +19,7 @@ public:
 	inline bool const isEmpty() { return root == 0; }
 	void insert(std::string);
 	void remove(std::string);
-	bool search(std::string);
+	TrieNode* search(std::string);
 
 };
 
