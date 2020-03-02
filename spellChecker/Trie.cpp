@@ -104,7 +104,36 @@ TrieNode* Trie::search(std::string word) {
 	return current;
 }
 
+// check if a node has children
+bool hasChildren(TrieNode* node) {
+	for (int i = 0; i < ALPHABET; ++i) {
+		if (node->children[i]) {
+			// if the node has any children return true
+			return true;
+		}
+	}
+	// else return false
+	return false;
+}
+
 // remove function
-void Trie::remove(std::string) {
+void Trie::remove(std::string word) {
+	TrieNode *node = search(word);
+
+	if (node == 0) {
+		std::cerr << word << " not found in trie.\n";
+		return;
+	}
+
+	if (node->isWord) {
+		node->isWord = false;
+	}
+
+	if (hasChildren(node)) {
+
+	}
+	else {
+
+	}
 
 }
