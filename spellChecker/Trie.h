@@ -18,7 +18,7 @@ public:
 	~Trie();	// destructor
 	inline bool const isEmpty() { return root == 0; }
 	void insert(std::string);
-	void remove(std::string);
+	TrieNode* remove(std::string);
 	TrieNode* search(std::string);
 
 };

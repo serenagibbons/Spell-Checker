@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include "Trie.h"
 
 // function prototype
@@ -32,18 +33,17 @@ int main() {
 	input.close();
 
 	// declare variables
-	std::string word;
+	std::string fileInput;
 	TrieNode *found;
 	int exit = 0;
 
 	do {
-		// prompt user to enter a word
-		std::cout << "Enter a text file name to check its spellling (-1 to quit): ";
-		//std::cout << "Enter a word to check its spelling, or enter -1 to quit: ";
-		std::cin >> word;
+		// prompt user to enter a file
+		std::cout << "Enter a text file name to check its spelling (-1 to quit): ";
+		std::cin >> fileInput;
 
 		try {
-			exit = std::stoi(word);
+			exit = std::stoi(fileInput);
 		}
 		catch (std::exception) {
 			exit = 0;
@@ -53,16 +53,7 @@ int main() {
 			std::cout << "exiting spell checker\n";
 		}
 		else {
-			spellCheck(trie, word);
-			/*
-			// search for word in the trie
-			found = trie.search(word);
-			if (found != 0) {
-				std::cout << word << " is spelled correctly.\n";
-			}
-			else {
-				std::cout << word << " is spelled incorrectly, or was not found in the trie.\n";
-			}*/
+			spellCheck(trie, fileInput);
 		}
 
 	} while (exit != -1);
@@ -71,6 +62,7 @@ int main() {
 	return 0;
 }
 
+// check spelling of the input file
 void spellCheck(Trie trie, std::string file) {
 	std::ifstream input;
 	input.open(file);
@@ -81,25 +73,33 @@ void spellCheck(Trie trie, std::string file) {
 		return;
 	}
 	
-	int count = 0;
+	int count = 0; // incorrectly spelled words count
+	std::vector<std::string> incorrectWords;
+
 	while (std::getline(input, str, ' '))
 	{
 		TrieNode* node = 0;
-		// if line contains string of length > 0, insert it into the trie
+		// if line contains string of length > 0, search for it in the trie
 		if (str.size() > 0) {
 			node = trie.search(str);
+			// if search returns null
 			if (node == 0) {
-				++count; // increment count
-
+				++count; // increment count of incorrect words
+				incorrectWords.push_back(str);
 			}
 		}
 	}
 
 	if (count == 0) {
-		std::cout << "Spelling check is complete. All words spelled correctly.";
+		std::cout << "Spelling check is complete. All words spelled correctly.\n\n";
 		return;
 	}
 
 	std::cout << count << " word(s) spelled incorrectly.\n";
+	// output incorrectly spelled words
+	for (std::string s : incorrectWords) {
+		std::cout << s << std::endl;
+	}
+	std::cout << std::endl;
 
 }

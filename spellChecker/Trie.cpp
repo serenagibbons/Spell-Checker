@@ -117,23 +117,28 @@ bool hasChildren(TrieNode* node) {
 }
 
 // remove function
-void Trie::remove(std::string word) {
+TrieNode* Trie::remove(std::string word) {
 	TrieNode *node = search(word);
 
 	if (node == 0) {
 		std::cerr << word << " not found in trie.\n";
-		return;
+		return 0;
 	}
 
+	// set isWord to false
 	if (node->isWord) {
 		node->isWord = false;
 	}
 
-	if (hasChildren(node)) {
-
+	// if the node not is a prefix of another word (has not children)
+	if (!hasChildren(node)) {
+		delete (node);
+		node = NULL;
 	}
 	else {
 
 	}
+
+	return node;
 
 }
